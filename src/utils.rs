@@ -1,4 +1,5 @@
 //! Utilities for working with VST3 interface objects.
+use std::ptr::null_mut;
 
 use vst3_com::{ComInterface, RawVstPtr};
 
@@ -17,6 +18,12 @@ pub struct SharedVstPtr<I: ComInterface + ?Sized> {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct StaticVstPtr<I: ComInterface + ?Sized> {
     ptr: *mut *mut <I as ComInterface>::VTable,
+}
+
+impl<I: ComInterface + ?Sized> Default for SharedVstPtr<I> {
+    fn default() -> Self {
+        Self { ptr: null_mut() }
+    }
 }
 
 impl<I: ComInterface + ?Sized> SharedVstPtr<I> {
